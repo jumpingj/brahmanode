@@ -1,0 +1,77 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8" />
+    <title>Starter Package Checkout Page</title>
+    <link href="style2.css" type="text/css" rel="stylesheet" />
+  </head>
+  <body>
+    <div id="page-wrap"> <img alt="Brahma Designs Checkout" src="images/1.jpg" /><br />
+      <br />
+      <p>By <a href="http://css-tricks.com">CSS-Tricks</a></p>
+      <p>Within 12 hours of checkout you will recieve an email from your project
+        manager. Please include as much detail about your project as possible so
+        we can begin within 24 hours.</p>
+      <p>If you are trying to contact CSS-Tricks, DO NOT USE THIS FORM. This is
+        just an example, my real <a href="http://css-tricks.com/contact/">contact
+          form is here</a>.</p>
+      <p><a href="http://balancedpayments.com">[Checkout powered by Balance]</a></p>
+      <div id="contact-area">
+        <script src="https://js.balancedpayments.com/v1/balanced.js"></script>
+        <script>
+    var BALANCED_MARKETPLACE_URI = "/v1/marketplaces/MP727ZcPIsPpL5FxT7ZR31U3";
+    balanced.init(BALANCED_MARKETPLACE_URI);
+</script> <form method="POST" action="pay/balanced" id="payment_form"> Name: <input
+
+            value="Pinkie Pie" name="name" /> <br />
+          Amount: <input value="12.34" name="amount" /> <br />
+          Email: <input value="gotya108@aol.com" name="email" /> <br />
+          Card Number: <input value="4111 1111 1111 1111" name="card_number" />
+          <br />
+          Expiration Month: <input value="4" name="expiration_month" /> <br />
+          Expiration Year: <input value="2050" name="expiration_year" /> <br />
+          Security Code: <input value="123" name="security_code" /> <br />
+          <!-- Hidden inputs --> <input type="hidden" name="card_uri" /> </form>
+        <button onclick="charge();"> Pay with Credit Card </button>
+        <script>
+
+// Get card data from form.
+function getCardData(){
+    // Actual form data
+    var form = document.getElementById("payment_form");
+    return {
+        "name": form.name.value,
+        "amount": form.amount.value,
+        "email": form.email.value,
+        "card_number": form.card_number.value,
+        "expiration_month": form.expiration_month.value,
+        "expiration_year": form.expiration_year.value,
+        "security_code": form.security_code.value
+    };
+}
+
+// Charge credit card
+function charge(){
+
+    // Securely tokenize card data using Balanced
+    var cardData = getCardData();
+    balanced.card.create(cardData, function(response) {
+
+        // Handle Errors (Anything that's not Success Code 201)
+        if(response.status!=201){
+            alert(response.error.description);
+            return;
+        }
+
+        // Submit form with Card URI
+        var form = document.getElementById("payment_form");
+        form.card_uri.value = response.data.uri;
+        form.submit();
+
+    });
+
+};
+
+</script> </div></div>
+  </body>
+</html>
